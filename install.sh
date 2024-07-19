@@ -12,9 +12,13 @@ max_parallel_downloads=10
 defaultyes=True
 keepcache=True"
 
-echo "$dnfConfig" >> /etc/dnf/dnf.conf
+sudo echo "$dnfConfig" >> /etc/dnf/dnf.conf
 
-dnf update
+sudo -y dnf update
+
+# rpm fusion
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf update @core
 
 sudo dnf -y install gnome-tweak-tool dconf-editor
 
@@ -45,9 +49,9 @@ flatpak install flathub com.getpostman.Postman
 
 # Install asdf
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-echo '\n# ASDF' >> ~/.bashrc
-echo '\n. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-echo '\n. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+echo '# ASDF' >> ~/.bashrc
+echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
 
 # Install CUDA toolkit 
 wget https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/cuda-repo-fedora39-12-5-local-12.5.1_555.42.06-1.x86_64.rpm
@@ -65,13 +69,12 @@ sudo dnf -y install unzip p7zip p7zip-plugins unrar
 
 # Configure alacritty
 mkdir ~/.config/alacritty/
-mkdir ~/.config/alacritty/themes
 git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
 cp alacritty.toml ~/.config/alacritty/alacritty.toml
 
 # Configure starship
-echo '\n# Starship' >> ~/.bashrc
-echo '\neval "$(starship init bash)"' >> ~/.bashrc
+echo '# Starship' >> ~/.bashrc
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
 cp starship.toml ~/.config/starship.toml
 
 # Configure neovim
