@@ -14,7 +14,7 @@ keepcache=True"
 
 sudo echo "$dnfConfig" >> /etc/dnf/dnf.conf
 
-sudo -y dnf update
+sudo dnf -y update
 
 # rpm fusion
 sudo dnf -y install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -43,9 +43,10 @@ sudo dnf -y install htop sl neofetch
 sudo dnf -y install telegram discord vlc
 
 # Install dev tools
-sudo dnf groupinstall 'Development Tools' && dnf groupinstall 'C Development Tools and Libraries'
+sudo dnf -y groupinstall 'Development Tools'
+sudo dnf -y groupinstall 'C Development Tools and Libraries'
 sudo dnf -y install docker docker-compose
-flatpak install flathub com.getpostman.Postman
+flatpak install flathub rest.insomnia.Insomnia
 
 # Install asdf
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
