@@ -27,6 +27,17 @@ git clone https://github.com/melohugo/dotfiles.git
 cd dotfiles
 ```
 
+Para deixar o dnf mais rapido cole
+
+fastestmirror=True
+max_parallel_downloads=10
+defaultyes=True
+keepcache=True
+
+em 
+
+/etc/dnf/dnf.conf
+
 Utilize o make para dar permissão de execução ao script install.sh
 
 ```bash

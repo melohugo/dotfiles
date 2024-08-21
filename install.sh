@@ -4,16 +4,6 @@
 read -p "Give a hostname: " hostName
 sudo hostnamectl set-hostname $hostName
 
-# Configure dnf for more speed
-dnfConfig="
-# Added for speed
-fastestmirror=True
-max_parallel_downloads=10
-defaultyes=True
-keepcache=True"
-
-sudo echo "$dnfConfig" >> /etc/dnf/dnf.conf
-
 sudo dnf -y update
 
 # rpm fusion
@@ -41,6 +31,13 @@ sudo dnf -y install htop sl neofetch
 
 # Install useful apps
 sudo dnf -y install telegram discord vlc
+flatpak install flathub com.github.marktext.marktext # Install marktext
+flatpak install flathub com.obsproject.Studio
+
+# Install codecs
+sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+sudo dnf groupupdate sound-and-video
 
 # Install dev tools
 sudo dnf -y groupinstall 'Development Tools'
@@ -54,14 +51,6 @@ echo '# ASDF' >> ~/.bashrc
 echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
 echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
 
-# Install CUDA toolkit 
-wget https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/cuda-repo-fedora39-12-5-local-12.5.1_555.42.06-1.x86_64.rpm
-sudo rpm -i cuda-repo-fedora39-12-5-local-12.5.1_555.42.06-1.x86_64.rpm
-sudo dnf clean all
-sudo dnf -y install cuda-toolkit-12-5
-sudo dnf -y module install nvidia-driver:open-dkms # Install driver
-
-sudo dnf -y install java-openjdk icedtea-web
 sudo dnf -y install unzip p7zip p7zip-plugins unrar
 
 ########################################
