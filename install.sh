@@ -27,9 +27,7 @@ cd ..
 sudo dnf -y install alacritty
 curl -sS https://starship.rs/install.sh | sh
 sudo dnf -y install vim neovim tmux
-sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide
-echo '# Zoxide' >> ~/.bashrc
-echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide stow
 
 # Install useful apps
 sudo dnf -y install telegram discord vlc steam
@@ -68,24 +66,35 @@ sudo dnf -y install unzip p7zip p7zip-plugins unrar
 #              Setting                 #
 ########################################
 
-# Configure alacritty
+# Creating files to run Stow
 mkdir ~/.config/alacritty/
+mkdir ~/.config/nvim/
+
+# Linking configuration files
+PACKAGES=(nvim alacritty starship tmux)
+
+for pkg in "${PACKAGES[@]}"; do
+    echo "Installing $pkg config"
+    stow $pkg
+done
+
+# Theme of alacritty
 git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
-cp alacritty.toml ~/.config/alacritty/alacritty.toml
+
+# Packer for neovim
+git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
+# TPM for tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Configure zoxide
+echo '# Zoxide' >> ~/.bashrc
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # Configure starship
 echo '# Starship' >> ~/.bashrc
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
-cp starship.toml ~/.config/starship.toml
-
-# Configure neovim
-git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-cp -r nvim/ ~/.config/nvim
-
-# Configure tmux
-cp .tmux.conf ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Configure Fuzzy Finder
 cat fuzzy_finder >> ~/.bashrc
