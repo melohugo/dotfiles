@@ -27,12 +27,15 @@ cd ..
 sudo dnf -y install alacritty
 curl -sS https://starship.rs/install.sh | sh
 sudo dnf -y install vim neovim tmux
-sudo dnf -y install htop sl neofetch
+sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide
+echo '# Zoxide' >> ~/.bashrc
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 
 # Install useful apps
-sudo dnf -y install telegram discord vlc
+sudo dnf -y install telegram discord vlc steam
 flatpak install flathub com.github.marktext.marktext # Install marktext
 flatpak install flathub com.obsproject.Studio
+flatpak install flathub com.visualstudio.code
 
 # Install codecs
 sudo dnf swap ffmpeg-free ffmpeg --allowerasing
@@ -50,6 +53,14 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
 echo '# ASDF' >> ~/.bashrc
 echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
 echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+
+# Install Lazydocker
+asdf plugin add lazydocker https://github.com/comdotlinux/asdf-lazydocker.git
+asdf list all lazydocker
+asdf install lazydocker latest
+asdf global lazydocker latest
+echo '# Lazydocker' >> ~/.bashrc
+echo 'alias lzd='lazydocker'' >> ~/.bashrc
 
 sudo dnf -y install unzip p7zip p7zip-plugins unrar
 
@@ -75,3 +86,6 @@ cp -r nvim/ ~/.config/nvim
 # Configure tmux
 cp .tmux.conf ~/.tmux.conf
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Configure Fuzzy Finder
+cat fuzzy_finder >> ~/.bashrc
