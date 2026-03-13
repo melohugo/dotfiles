@@ -14,7 +14,9 @@ sudo dnf -y install gnome-tweak-tool dconf-editor
 
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-sudo dnf -y curl
+sudo dnf -y install curl
+
+sudo dnf -y install dnf-plugins-core
 
 # Install nerd fonts
 git clone --depth=1 https://github.com/terroo/fonts
@@ -43,11 +45,14 @@ sudo dnf groupupdate sound-and-video
 # Install dev tools
 sudo dnf -y groupinstall 'Development Tools'
 sudo dnf -y groupinstall 'C Development Tools and Libraries'
-sudo dnf -y install docker docker-compose
 flatpak install flathub rest.insomnia.Insomnia
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
 
 # Install asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.1
 echo '# ASDF' >> ~/.bashrc
 echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
 echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
