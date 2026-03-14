@@ -12,10 +12,10 @@ Este repositório contém minhas configurações pessoais para ferramentas como 
 
 ## Pré-requisitos
 
-Certifique-se de ter o Git instalado. Você pode instalar o Git usando o seguinte comando:
+Certifique-se de ter o Git e o make instalado. Você pode instalar o Git e o make usando o seguinte comando:
 
 ```bash
-sudo dnf install git
+sudo dnf install git make
 ```
 
 ## Como usar
@@ -27,26 +27,8 @@ git clone https://github.com/melohugo/dotfiles.git
 cd dotfiles
 ```
 
-Para deixar o dnf mais rapido cole
-
-fastestmirror=True
-max_parallel_downloads=10
-defaultyes=True
-keepcache=True
-
-em 
-
-/etc/dnf/dnf.conf
-
-Utilize o make para dar permissão de execução ao script install.sh
+Utilize o make para configurar tudo com esse comando:
 
 ```bash
 make install
 ```
-
-execute o script install.sh
-
-```bash
-./install.sh
-```
-
