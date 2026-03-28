@@ -30,7 +30,7 @@ cd ..
 sudo dnf -y install alacritty
 curl -sS https://starship.rs/install.sh | sh
 sudo dnf -y install vim neovim tmux
-sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide stow
+sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide stow bc wl-clipboard
 
 # Install useful apps
 sudo dnf -y install telegram discord vlc steam
@@ -89,6 +89,8 @@ git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/theme
 
 # TPM for tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Install plugins automatically
+~/.tmux/plugins/tpm/bin/install_plugins
 
 # Configure zoxide
 echo '# Zoxide' >> ~/.bashrc
