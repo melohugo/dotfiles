@@ -26,6 +26,18 @@ require("lazy").setup({
     'mbbill/undotree',
     'tpope/vim-fugitive',
     'christoomey/vim-tmux-navigator',
+    'eandrju/cellular-automaton.nvim',
+    'ThePrimeagen/vim-with-me',
+    {
+        'stevearc/oil.nvim',
+        opts = {
+            default_file_explorer = true,
+            view_options = {
+                show_hidden = true,
+            },
+        },
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+    },
 
     -- LSP Zero
     {

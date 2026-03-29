@@ -30,7 +30,9 @@ cd ..
 sudo dnf -y install alacritty
 curl -sS https://starship.rs/install.sh | sh
 sudo dnf -y install vim neovim tmux
-sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide stow bc wl-clipboard
+sudo dnf -y install htop sl neofetch cmatrix cowsay bat fd-find fzf zoxide stow bc wl-clipboard ripgrep eza
+sudo dnf -y copr enable atim/lazygit
+sudo dnf -y install lazygit
 
 # Install useful apps
 sudo dnf -y install telegram discord vlc steam
