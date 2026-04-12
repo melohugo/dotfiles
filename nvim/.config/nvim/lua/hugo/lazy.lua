@@ -16,10 +16,40 @@ require("lazy").setup({
     { 'nvim-telescope/telescope.nvim', tag = '0.1.6', dependencies = { 'nvim-lua/plenary.nvim' } },
 
     -- Cores
-    { "ellisonleao/gruvbox.nvim", priority = 1000 },
+    { "sainnhe/gruvbox-material", priority = 1000 },
 
     -- Treesitter
     { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+
+    -- UI Moderna
+    {
+        'folke/noice.nvim',
+        event = "VeryLazy",
+        opts = {
+            -- add any options here
+        },
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        }
+    },
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' }
+    },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        init = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+        end,
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+        }
+    },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 
     -- Utilidades
     'ThePrimeagen/harpoon',
@@ -39,7 +69,7 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
-    -- LSP Zero
+    -- LSP & Autocomplete (Moderno)
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
@@ -47,9 +77,23 @@ require("lazy").setup({
             {'williamboman/mason.nvim'},
             {'williamboman/mason-lspconfig.nvim'},
             {'neovim/nvim-lspconfig'},
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-nvim-lsp'},
             {'L3MON4D3/LuaSnip'},
         }
+    },
+    {
+        'saghen/blink.cmp',
+        version = '*',
+        dependencies = 'rafamadriz/friendly-snippets',
+        opts = {
+            keymap = { preset = 'default' },
+            appearance = {
+                use_nvim_web_devicons = true,
+                nerd_font_variant = 'mono'
+            },
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+        },
+        opts_extend = { "sources.default" }
     },
 })
