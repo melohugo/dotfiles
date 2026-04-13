@@ -12,8 +12,15 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    -- Telescope
-    { 'nvim-telescope/telescope.nvim', tag = '0.1.6', dependencies = { 'nvim-lua/plenary.nvim' } },
+    -- FZF-Lua (Substituindo Telescope por performance e estabilidade)
+    { 
+        "ibhagwan/fzf-lua",
+        -- dependências opcionais para ícones
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+          require("fzf-lua").setup({})
+        end
+    },
 
     -- Cores
     { "sainnhe/gruvbox-material", priority = 1000 },
@@ -52,6 +59,7 @@ require("lazy").setup({
     { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 
     -- Utilidades
+    'nvim-lua/plenary.nvim',
     'ThePrimeagen/harpoon',
     'mbbill/undotree',
     'tpope/vim-fugitive',
@@ -87,7 +95,6 @@ require("lazy").setup({
         opts = {
             keymap = { preset = 'default' },
             appearance = {
-                use_nvim_web_devicons = true,
                 nerd_font_variant = 'mono'
             },
             sources = {
