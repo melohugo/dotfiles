@@ -55,18 +55,17 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker $USER
 
 # Install asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.1
-echo '# ASDF' >> ~/.bashrc
-echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+if [ ! -d "$HOME/.asdf" ]; then
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.1
+fi
+
+# Load ASDF for this script session
+. "$HOME/.asdf/asdf.sh"
 
 # Install Lazydocker
-asdf plugin add lazydocker https://github.com/comdotlinux/asdf-lazydocker.git
-asdf list all lazydocker
+asdf plugin add lazydocker https://github.com/comdotlinux/asdf-lazydocker.git || true
 asdf install lazydocker latest
 asdf global lazydocker latest
-echo '# Lazydocker' >> ~/.bashrc
-echo 'alias lzd='lazydocker'' >> ~/.bashrc
 
 sudo dnf -y install unzip p7zip p7zip-plugins unrar
 
@@ -75,11 +74,12 @@ sudo dnf -y install unzip p7zip p7zip-plugins unrar
 ########################################
 
 # Creating files to run Stow
-mkdir ~/.config/alacritty/
-mkdir ~/.config/nvim/
+mkdir -p ~/.config/alacritty/
+mkdir -p ~/.config/nvim/
+mkdir -p ~/.bashrc.d/
 
 # Linking configuration files
-PACKAGES=(nvim alacritty starship tmux)
+PACKAGES=(nvim alacritty starship tmux bash)
 
 for pkg in "${PACKAGES[@]}"; do
     echo "Installing $pkg config"
@@ -87,20 +87,13 @@ for pkg in "${PACKAGES[@]}"; do
 done
 
 # Theme of alacritty
-git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+if [ ! -d ~/.config/alacritty/themes ]; then
+    git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+fi
 
 # TPM for tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 # Install plugins automatically
 ~/.tmux/plugins/tpm/bin/install_plugins
-
-# Configure zoxide
-echo '# Zoxide' >> ~/.bashrc
-echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
-
-# Configure starship
-echo '# Starship' >> ~/.bashrc
-echo 'eval "$(starship init bash)"' >> ~/.bashrc
-
-# Configure Fuzzy Finder
-cat fuzzy_finder >> ~/.bashrc
