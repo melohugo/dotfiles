@@ -58,6 +58,25 @@ require("lazy").setup({
     },
     { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 
+    -- Fechamento automático de parênteses, aspas, etc. (Super leve)
+    { 'echasnovski/mini.pairs', version = '*', event = "InsertEnter", config = true },
+
+    -- Sinalização visual do Git no editor
+    {
+        'lewis6991/gitsigns.nvim',
+        event = { "BufReadPre", "BufNewFile" },
+        opts = {
+            signs = {
+                add          = { text = '┃' },
+                change       = { text = '┃' },
+                delete       = { text = '_' },
+                topdelete    = { text = '‾' },
+                changedelete = { text = '~' },
+                untracked    = { text = '┆' },
+            },
+        }
+    },
+
     -- Utilidades
     'nvim-lua/plenary.nvim',
     'ThePrimeagen/harpoon',

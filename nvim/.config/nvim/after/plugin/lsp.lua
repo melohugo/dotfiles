@@ -6,7 +6,13 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-	ensure_installed = {},
+	-- Insira os LSPs que você sempre quer disponíveis no seu Fedora
+	ensure_installed = {
+		'lua_ls',       -- Neovim/Lua
+		'bashls',       -- Scripts de Shell
+		'dockerls',     -- Dockerfile
+		'docker_compose_language_service', -- Docker Compose
+	},
 	handlers = {
 		function(server_name)
 			local capabilities = require('blink.cmp').get_lsp_capabilities()
