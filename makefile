@@ -1,4 +1,4 @@
-PACKAGES := nvim alacritty starship tmux
+PACKAGES := nvim alacritty starship tmux bash
 
 .PHONY: all install stow restow delete help
 

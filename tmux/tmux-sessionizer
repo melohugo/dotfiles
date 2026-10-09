@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# tmux-sessionizer: Gerenciador de sessões de projeto sob demanda para Tmux
+# ==============================================================================
+
+set -e
+
+# 1. Determinar o diretório alvo
+target_dir=""
+
+if [ "$1" = "--select" ] || [ "$1" = "-s" ]; then
+  # Modo de seleção interativa via fzf
+  if command -v fzf >/dev/null 2>&1; then
+    target_dir=$(find ~ -maxdepth 2 -not -path '*/.*' -type d 2>/dev/null | fzf --prompt="📂 Selecionar Projeto: ")
+    [ -z "$target_dir" ] && exit 0
+  else
+    echo "fzf não está instalado ou disponível no PATH." >&2
+    exit 1
+  fi
+elif [ -n "$1" ] && [ -d "$1" ]; then
+  target_dir=$(realpath "$1")
+else
+  # Sem argumentos ou padrão: utiliza o diretório atual
+  target_dir=$(pwd)
+fi
+
+# Sanitizar nome da sessão para o tmux (troca pontos por underscores)
+session_name=$(basename "$target_dir" | tr '.' '_')
+
+# 2. Se a sessão já existe, apenas conecta/troca para ela
+if tmux has-session -t "$session_name" 2>/dev/null; then
+  if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$session_name"
+  else
+    tmux attach-session -t "$session_name"
+  fi
+  exit 0
+fi
+
+# 3. Criação da nova sessão sob demanda
+# Janela 1: editor (Neovim)
+tmux new-session -d -s "$session_name" -c "$target_dir" -n "editor"
+tmux send-keys -t "$session_name:editor" "nvim" C-m
+
+# Janela 2: agy (Antigravity Assistant)
+tmux new-window -t "$session_name" -n "agy" -c "$target_dir"
+tmux send-keys -t "$session_name:agy" "agy" C-m
+
+# Janela 3: run (Terminal de execução)
+tmux new-window -t "$session_name" -n "run" -c "$target_dir"
+
+# 4. Execução de comandos específicos do projeto na Janela 3 (run) sob demanda
+# Ordem de prioridade para customizações:
+# a) Configuração central em ~/.config/tmux/projects/<nome_sessao>.sh
+# b) Script executável .tmux-run ou .tmux-dev na raiz do projeto
+# c) Arquivo texto com comando .tmux-run na raiz do projeto
+custom_proj_cfg="$HOME/.config/tmux/projects/${session_name}.sh"
+RUN_CMD=""
+
+if [ -f "$custom_proj_cfg" ]; then
+  # shellcheck source=/dev/null
+  source "$custom_proj_cfg"
+fi
+
+if [ -n "$RUN_CMD" ]; then
+  tmux send-keys -t "$session_name:run" "$RUN_CMD" C-m
+elif [ -x "$target_dir/.tmux-run" ]; then
+  tmux send-keys -t "$session_name:run" "./.tmux-run" C-m
+elif [ -x "$target_dir/.tmux-dev" ]; then
+  tmux send-keys -t "$session_name:run" "./.tmux-dev" C-m
+elif [ -f "$target_dir/.tmux-run" ]; then
+  run_first_line=$(head -n 1 "$target_dir/.tmux-run")
+  [ -n "$run_first_line" ] && tmux send-keys -t "$session_name:run" "$run_first_line" C-m
+fi
+
+# 5. Focar na Janela 1 (editor) como inicial
+tmux select-window -t "$session_name:1"
+
+# 6. Conectar à sessão (switch-client se já estiver no tmux, attach caso contrário)
+if [ -n "$TMUX" ]; then
+  tmux switch-client -t "$session_name"
+else
+  tmux attach-session -t "$session_name"
+fi
