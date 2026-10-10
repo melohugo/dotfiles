@@ -30,6 +30,14 @@ require("lazy").setup({
 
     -- UI Moderna
     {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = function()
+            return require("hugo.dashboard").get_opts()
+        end,
+    },
+    {
         'folke/noice.nvim',
         event = "VeryLazy",
         opts = {

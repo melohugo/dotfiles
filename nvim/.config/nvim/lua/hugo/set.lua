@@ -28,4 +28,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- Oculta os caracteres ~ no final do buffer
+vim.opt.fillchars = { eob = " " }
+
 --vim.opt.colorcolumn = "80"
